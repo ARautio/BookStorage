@@ -1,10 +1,22 @@
 import express from "express";
+import * as ws from "ws";
 import { getPath } from "../utils";
 
 const PATH = "/books";
 
+interface DataConnection {
+  app: express.Application;
+  wss: ws.Server;
+}
+
+interface Callback {
+  index: number;
+  filename: string;
+  total: number;
+}
+
 export const books = (
-  app: express.Application,
+  { app, wss }: DataConnection,
   bookRepository: any,
   ePubRepository: any,
   settingsRepository: any
@@ -18,7 +30,11 @@ export const books = (
   app.get(getBookPath("/import"), async (req, res) => {
     //@TODO: Error handling
     const settings = await settingsRepository.getSettings();
-    const books = await ePubRepository.getBooks(settings.bookPath);
+
+    const callback = ({ filename, index, total }: Callback) => {
+      //@TODO: Send websocket
+    };
+    const books = await ePubRepository.getBooks(settings.bookPath, callback);
     await bookRepository.addBooks(books);
     res.sendStatus(200);
   });
