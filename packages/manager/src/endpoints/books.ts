@@ -1,5 +1,5 @@
 import express from 'express'
-import { getPath } from './utils'
+import { getPath } from '../utils'
 
 const PATH = '/books'
 
