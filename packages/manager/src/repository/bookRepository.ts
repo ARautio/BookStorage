@@ -36,7 +36,6 @@ export class BookRepository {
         const book: any = await promise;
 
         // @TODO: Update the book even though it's in DB
-        console.log(book.length);
         if (book.length === 0) {
           await getFromDB(
             this.db,
