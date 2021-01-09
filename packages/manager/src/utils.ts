@@ -12,6 +12,15 @@ export const getFromDB = (db: sqlite3.Database, query: string) => {
   });
 };
 
+export const getSingleFromDB = (db: sqlite3.Database, query: string) => {
+  return new Promise((resolve, reject) => {
+    db.get(query, (error, row) => {
+      if (error) reject(error);
+      else resolve(row);
+    });
+  });
+};
+
 export const runFromDB = (db: sqlite3.Database, query: string) => {
   return new Promise((resolve, reject) => {
     db.run(query, (error) => {

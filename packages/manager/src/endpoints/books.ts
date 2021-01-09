@@ -1,20 +1,25 @@
-import express from 'express'
-import { getPath } from '../utils'
+import express from "express";
+import { getPath } from "../utils";
 
-const PATH = '/books'
+const PATH = "/books";
 
+export const books = (
+  app: express.Application,
+  bookRepository: any,
+  ePubRepository: any,
+  settingsRepository: any
+) => {
+  const getBookPath = getPath(PATH);
 
-export const books = (app: express.Application, bookRepository: any, ePubRepository: any) => {
-  const getBookPath = getPath(PATH)
+  app.get(getBookPath("/"), async (req, res) => {
+    res.send(await bookRepository.getBooks());
+  });
 
-  app.get(getBookPath('/'), async (req, res) => {
-    res.send(await bookRepository.getBooks())
-  })
-
-  app.get(getBookPath('/import'), async (req, res) => {
+  app.get(getBookPath("/import"), async (req, res) => {
     //@TODO: Error handling
-    const books = await ePubRepository.getBooks()
-    await bookRepository.addBooks(books)
-    res.sendStatus(200)
-  })
-}
+    const settings = await settingsRepository.getSettings();
+    const books = await ePubRepository.getBooks(settings.bookPath);
+    await bookRepository.addBooks(books);
+    res.sendStatus(200);
+  });
+};

@@ -1,9 +1,12 @@
 interface Settings {
-  bookPath: string
+  bookPath: string;
 }
 
 class Settings {
-  constructor(){
-    this.bookPath = ''
+  bookPath;
+  constructor({ bookPath }: Settings) {
+    this.bookPath = bookPath;
   }
 }
+
+export default Settings;
