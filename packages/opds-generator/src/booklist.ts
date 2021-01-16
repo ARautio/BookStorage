@@ -38,7 +38,7 @@ export const root = ({
 
   ${books.map(item => book(item)).join('')}
 </feed>
-`;
+`.trim();
 };
 
 interface IBook {
