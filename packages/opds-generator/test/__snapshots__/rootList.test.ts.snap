@@ -18,13 +18,13 @@ exports[`rootList root should generate base item 1`] = `
     </author>
     
   <entry>
-    <title>Popular books</title>
-    <link rel=\\"http://opds-spec.org/sort/popular\\"
-          href=\\"//popular.xml\\"
+    <title>Popular</title>
+    <link rel=\\"entry\\"
+          href=\\"/books\\"
           type=\\"application/atom+xml;profile=opds-catalog;kind=acquisition\\"/>
-    <updated>Wed Jan 01 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
+    <updated>Thu Jan 02 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type=\\"text\\">Yeah popular</content>
+    <content type=\\"text\\">Popular books</content>
   </entry>
   
   </feed>"
