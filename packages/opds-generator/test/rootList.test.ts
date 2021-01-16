@@ -11,6 +11,7 @@ describe('rootList', () => {
             updated: new Date('2020-01-01'),
             options: [
               {
+                id: 'Popular',
                 title: 'Popular',
                 type: 'entry',
                 link: '/books',
@@ -18,6 +19,11 @@ describe('rootList', () => {
                 description: 'Popular books',
               },
             ],
+            settings: {
+              name: 'Test OPDS',
+              bookPath: '/',
+              coverPath: '/',
+            },
           })
         )
       ).toEqual(true);
@@ -30,6 +36,7 @@ describe('rootList', () => {
           updated: new Date('2020-01-01'),
           options: [
             {
+              id: 'Popular',
               title: 'Popular',
               type: 'entry',
               link: '/books',
@@ -37,6 +44,11 @@ describe('rootList', () => {
               description: 'Popular books',
             },
           ],
+          settings: {
+            name: 'Test OPDS',
+            bookPath: '/',
+            coverPath: '/',
+          },
         })
       ).toMatchSnapshot();
     });
@@ -45,6 +57,7 @@ describe('rootList', () => {
     it('should generate an entry', () => {
       expect(
         rootList.rootEntry({
+          id: 'Book',
           title: 'Test Book',
           type: 'entry',
           link: '/books',

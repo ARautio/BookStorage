@@ -3,27 +3,27 @@
 exports[`rootList root should generate base item 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
   <feed xmlns=\\"http://www.w3.org/2005/Atom\\">
-    <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
+    <id>OPDSRoot</id>
     <link rel=\\"self\\"  
           href=\\"//root.xml\\"
           type=\\"application/atom+xml;profile=opds-catalog;kind=navigation\\"/>
     <link rel=\\"start\\"
           href=\\"//root.xml\\"
           type=\\"application/atom+xml;profile=opds-catalog;kind=navigation\\"/>
-    <title>OPDS Catalog Root Example</title>
+    <title>Test OPDS</title>
     <updated>Wed Jan 01 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
     <author>
-      <name>Spec Writer</name>
-      <uri>http://opds-spec.org</uri>
+      <name>ODPS Generator</name>
+      <uri>https://github.com/ARautio/BookStorage/tree/main/packages/opds-generator</uri>
     </author>
     
   <entry>
     <title>Popular</title>
+    <id>Popular</id>
     <link rel=\\"entry\\"
           href=\\"/books\\"
           type=\\"application/atom+xml;profile=opds-catalog;kind=acquisition\\"/>
     <updated>Thu Jan 02 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
-    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
     <content type=\\"text\\">Popular books</content>
   </entry>
   
@@ -34,11 +34,11 @@ exports[`rootList rootEntry should generate an entry 1`] = `
 "
   <entry>
     <title>Test Book</title>
+    <id>Book</id>
     <link rel=\\"entry\\"
           href=\\"/books\\"
           type=\\"application/atom+xml;profile=opds-catalog;kind=acquisition\\"/>
     <updated>Wed Jan 01 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
-    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
     <content type=\\"text\\">Trest</content>
   </entry>
   "

@@ -1,40 +1,46 @@
+interface Settings {
+  name: String;
+  bookPath: String;
+  coverPath: String;
+}
+
 interface IBookList {
+  id: String;
   baseUrl: String;
-  type: String;
-  kind: String;
+  url: String;
   title: String;
   updated: Date;
   books: IBook[];
 }
 
 export const root = ({
+  id,
   baseUrl,
-  type,
-  kind,
+  url,
   title,
   updated,
   books,
 }: IBookList) => {
   return `
   <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"
+  <feed xmlns="http://www.w3.org/2005/Atom"
       xmlns:dc="http://purl.org/dc/terms/"
       xmlns:opds="http://opds-spec.org/2010/catalog">
-  <id>urn:uuid:433a5d6a-0b8c-4933-af65-4ca4f02763eb</id>
-
-  <link rel="self"    
-        href="${baseUrl}/${type}.xml"
-        type="application/atom+xml;profile=opds-catalog;kind=${kind}"/>
-  <link rel="start"  
-        href="${baseUrl}/root.xml"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <id>${id}</id>
 
   <title>${title}</title>
   <updated>${updated}</updated>
   <author>
-    <name>Spec Writer</name>
-    <uri>http://opds-spec.org</uri>
-  </author> 
+    <name>ODPS Generator</name>
+    <uri>https://github.com/ARautio/BookStorage/tree/main/packages/opds-generator</uri>
+  </author>
+
+  <link rel="self"    
+    href="${baseUrl}/${url}.xml"
+    type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start"  
+    href="${baseUrl}"
+    type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
 
   ${books.map(item => book(item)).join('')}
 </feed>
@@ -46,20 +52,11 @@ interface IBook {
   uuid: String;
   authors: IAuthor[];
   updated: Date;
-  isbn: String;
-  language: String;
-  issued: Date;
-  publisher: String;
   coverfilename: String;
   description: Date;
   coverFilename: String;
   files: IBookFile[];
   settings: Settings;
-}
-
-interface Settings {
-  filePath: string;
-  coverPath: string;
 }
 
 interface IAuthor {
@@ -76,43 +73,36 @@ const book = ({
   uuid,
   authors,
   updated,
-  isbn,
-  language,
-  publisher,
   coverfilename,
-  issued,
   description,
   files,
-  settings: { coverPath, filePath },
+  settings: { coverPath, bookPath },
 }: IBook) => {
   return `
       <entry>
       <title>${title}</title>
-      <id>urn:uuid:${uuid}</id>
+      <id>book:${uuid}</id>
       ${authors
         .map(
           author => `
       <author>
         <name>${author.name}</name>
-        <uri>http://opds-spec.org/authors/21285</uri>
       </author>
       `
         )
         .join('')}
       <updated>${updated}</updated>
-      <dc:identifier>urn:isbn:${isbn}</dc:identifier>
-      <dc:publisher>${publisher}</dc:publisher>
-      <dc:language>${language}</dc:language>
-      <dc:issued>${issued}</dc:issued>
       <content type="text">${description}</content>
       <link rel="http://opds-spec.org/image"    
             href="${coverPath}/${coverfilename}"
             type="image/jpeg"/>
-        
+      <link rel="http://opds-spec.org/image/thumbnail"    
+            href="${coverPath}/${coverfilename}"
+            type="image/jpeg"/>       
       ${files.map(
         file => `
-        <link rel="http://opds-spec.org/acquisition/buy"
-              href="${filePath}/${file.filename}"
+        <link rel="http://opds-spec.org/acquisition"
+              href="${bookPath}/${file.filename}"
               type="${file.filetype}">
         </link>
         `
