@@ -16,13 +16,14 @@ export class EPubRepository {
 
   async getBooks(
     bookPath: string,
-    callback: ({ index, filename, total }: Callback) => void = () => null
+    callbackForEachBook: ({ index, filename, total }: Callback) => void = () =>
+      null
   ) {
     //@TODO: Ability to read all directory levels
     const files = await fs.readdir(bookPath);
     const books = files.map(async (file, index) =>
       this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
-        callback({ index, filename, total: files.length })
+        callbackForEachBook({ index, filename, total: files.length })
       )
     );
     return Promise.all(books);
