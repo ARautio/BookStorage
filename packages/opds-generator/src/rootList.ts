@@ -9,7 +9,7 @@ export const root = ({ baseDir = '/opds-catalog', updated }: IRoot) => {
       title: 'Popular books',
       type: 'http://opds-spec.org/sort/popular',
       link: `${baseDir}/popular.xml`,
-      updated: new Date(),
+      updated: updated,
       description: 'Yeah popular',
     },
   ];
@@ -30,9 +30,9 @@ export const root = ({ baseDir = '/opds-catalog', updated }: IRoot) => {
       <name>Spec Writer</name>
       <uri>http://opds-spec.org</uri>
     </author>
-    ${rootList.join('\n')}
+    ${rootList.map(item => rootEntry(item)).join('\n')}
   </feed>
-  `;
+  `.trim();
 };
 
 interface IRootEntry {
@@ -53,8 +53,8 @@ export const rootEntry = ({
   return `
   <entry>
     <title>${title}</title>
-    <link rel=${type}
-          href=${link}
+    <link rel="${type}"
+          href="${link}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
     <updated>${updated}</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
