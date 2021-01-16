@@ -15,6 +15,7 @@ export class SettingsRepository {
       CREATE TABLE IF NOT EXISTS settings (
         id INTEGER,
         bookPath TEXT
+        coverPath TEXT
       );
     `
     );

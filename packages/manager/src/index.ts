@@ -4,6 +4,7 @@ import * as http from "http";
 import * as ws from "ws";
 
 import { books } from "./endpoints/books";
+import { opds } from "./endpoints/opds";
 import { BookRepository } from "./repository/bookRepository";
 import { EPubRepository } from "./repository/epubRepository";
 import { SettingsRepository } from "./repository/settingsRepository";
@@ -24,6 +25,7 @@ const bookRepository = new BookRepository(db);
 bookRepository.initiate();
 
 books({ app, wss }, bookRepository, ePubRepository, settingsRepository);
+opds({ app, wss });
 
 app.get("/", (req, res) => res.send("BookStorage started"));
 
