@@ -1,19 +1,14 @@
 interface IRoot {
   baseDir: String;
   updated: Date;
+  options: IRootEntry[];
 }
 
-export const root = ({ baseDir = '/opds-catalog', updated }: IRoot) => {
-  const rootList: IRootEntry[] = [
-    {
-      title: 'Popular books',
-      type: 'http://opds-spec.org/sort/popular',
-      link: `${baseDir}/popular.xml`,
-      updated: updated,
-      description: 'Yeah popular',
-    },
-  ];
-
+export const root = ({
+  baseDir = '/opds-catalog',
+  updated,
+  options,
+}: IRoot) => {
   return `
   <?xml version="1.0" encoding="UTF-8"?>
   <feed xmlns="http://www.w3.org/2005/Atom">
@@ -30,7 +25,7 @@ export const root = ({ baseDir = '/opds-catalog', updated }: IRoot) => {
       <name>Spec Writer</name>
       <uri>http://opds-spec.org</uri>
     </author>
-    ${rootList.map(item => rootEntry(item)).join('\n')}
+    ${options.map(item => rootEntry(item)).join('\n')}
   </feed>
   `.trim();
 };
