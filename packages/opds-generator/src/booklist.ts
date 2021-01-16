@@ -4,7 +4,7 @@ interface IBookList {
   kind: String;
   title: String;
   updated: Date;
-  books: [IBook];
+  books: IBook[];
 }
 
 export const root = ({
@@ -44,7 +44,7 @@ export const root = ({
 interface IBook {
   title: String;
   uuid: String;
-  authors: [IAuthor];
+  authors: IAuthor[];
   updated: Date;
   isbn: String;
   language: String;
@@ -53,7 +53,7 @@ interface IBook {
   coverfilename: String;
   description: Date;
   coverFilename: String;
-  files: [IBookFile];
+  files: IBookFile[];
   settings: Settings;
 }
 

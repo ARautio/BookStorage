@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rootList rootEntry works 1`] = `
+"
+  <entry>
+    <title>Test Book</title>
+    <link rel=entry
+          href=/books
+          type=\\"application/atom+xml;profile=opds-catalog;kind=acquisition\\"/>
+    <updated>Wed Jan 01 2020 02:00:00 GMT+0200 (Eastern European Standard Time)</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type=\\"text\\">Trest</content>
+  </entry>
+  "
+`;

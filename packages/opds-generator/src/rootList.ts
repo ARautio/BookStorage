@@ -4,7 +4,7 @@ interface IRoot {
 }
 
 export const root = ({ baseDir = '/opds-catalog', updated }: IRoot) => {
-  const rootList: [IRootEntry] = [
+  const rootList: IRootEntry[] = [
     {
       title: 'Popular books',
       type: 'http://opds-spec.org/sort/popular',
