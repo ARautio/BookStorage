@@ -48,6 +48,7 @@ export const opds = (
   app.get(getOPDSPath("/latest.xml"), async (req, res) => {
     const latestBooks: any = await bookRepository.getBooks({ limit: 20 });
     res.set("Content-Type", "text/xml");
+    console.log(latestBooks);
     res.send(
       opdsGen.book.root({
         id: "latest",
@@ -57,16 +58,15 @@ export const opds = (
         updated: new Date(),
         books: latestBooks.map((book: Book) => ({
           title: book.title,
-          uuid: "",
+          uuid: book.ISBN,
           authors: [
             {
               name: book.creator,
             },
           ],
           updated: new Date(),
-          coverfilename: "",
-          coverFilename: "",
-          description: new Date(),
+          coverFilename: book.coverFilename,
+          description: book.description,
           files: [
             {
               filename: book.filename,
@@ -75,7 +75,7 @@ export const opds = (
           ],
           settings: {
             name: "BookStorage",
-            coverPath: "assets/covers/",
+            coverPath: "/assets/covers",
             bookPath: "/assets/books",
           },
         })),

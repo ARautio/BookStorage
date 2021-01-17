@@ -25,7 +25,10 @@ export class BookRepository {
         filename TEXT PRIMARY KEY,
         title TEXT,
         description TEXT,
-        creator TEXT
+        creator TEXT,
+        issued TEXT,
+        coverFilename TEXT,
+        ISBN TEXT
       );
     `
     );
@@ -48,7 +51,15 @@ export class BookRepository {
     return Promise.all(books.map(async (book) => this.addBook(book)));
   }
 
-  async addBook({ filename, title, creator, description }: Book) {
+  async addBook({
+    filename,
+    title,
+    creator,
+    description,
+    ISBN,
+    issued,
+    coverFilename,
+  }: Book) {
     // @TODO: Check if filename is already
     const book: any = await getFromDB(
       this.db,
@@ -59,7 +70,8 @@ export class BookRepository {
     if (book.length === 0) {
       await getFromDB(
         this.db,
-        `INSERT INTO books (filename, title, creator, description) VALUES("${filename}", "${title}", "${creator}", "${description}")`
+        `INSERT INTO books (filename, title, creator, description, ISBN, issued, coverFilename) 
+          VALUES("${filename}", "${title}", "${creator}", "${description}","${ISBN}", "${issued}", "${coverFilename}")`
       );
     }
     return null;
