@@ -30,6 +30,7 @@ opds({ app, wss }, bookRepository);
 app.get("/", (req, res) => res.send("BookStorage started"));
 
 app.use("/assets/books/", express.static("../../books"));
+app.use("/assets/covers/", express.static("../../covers"));
 
 wss.on("connection", (socket) => {
   socket.on("message", (message) => console.log(message));

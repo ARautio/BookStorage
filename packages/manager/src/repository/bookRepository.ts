@@ -23,7 +23,9 @@ export class BookRepository {
       `
       CREATE TABLE IF NOT EXISTS books (
         filename TEXT PRIMARY KEY,
-        title TEXT
+        title TEXT,
+        description TEXT,
+        creator TEXT
       );
     `
     );
@@ -43,24 +45,23 @@ export class BookRepository {
   }
 
   async addBooks(books: [Book]) {
-    return Promise.all(
-      books.map(async ({ filename, title }) => {
-        // @TODO: Check if filename is already
-        const promise = getFromDB(
-          this.db,
-          `SELECT title FROM books WHERE "filename"="${filename}"`
-        );
-        const book: any = await promise;
+    return Promise.all(books.map(async (book) => this.addBook(book)));
+  }
 
-        // @TODO: Update the book even though it's in DB
-        if (book.length === 0) {
-          await getFromDB(
-            this.db,
-            `INSERT INTO books (filename, title) VALUES("${filename}", "${title}")`
-          );
-        }
-        return null;
-      })
+  async addBook({ filename, title, creator, description }: Book) {
+    // @TODO: Check if filename is already
+    const book: any = await getFromDB(
+      this.db,
+      `SELECT title FROM books WHERE "filename"="${filename}"`
     );
+
+    // @TODO: Update the book even though it's in DB
+    if (book.length === 0) {
+      await getFromDB(
+        this.db,
+        `INSERT INTO books (filename, title, creator, description) VALUES("${filename}", "${title}", "${creator}", "${description}")`
+      );
+    }
+    return null;
   }
 }

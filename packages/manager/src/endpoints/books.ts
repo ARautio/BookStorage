@@ -1,4 +1,5 @@
 import express from "express";
+import { book } from "opds-generator";
 import * as ws from "ws";
 import { getPath } from "../utils";
 
@@ -35,7 +36,13 @@ export const books = (
       //@TODO: Send websocket
     };
     const books = await ePubRepository.getBooks(settings.bookPath, callback);
-    await bookRepository.addBooks(books);
+
+    await Promise.all(
+      books.map(async (book: any) => {
+        await bookRepository.addBook(book);
+      })
+    );
+
     res.sendStatus(200);
   });
 };
