@@ -52,9 +52,8 @@ interface IBook {
   uuid: String;
   authors: IAuthor[];
   updated: Date;
-  coverfilename: String;
-  description: Date;
   coverFilename: String;
+  description: String;
   files: IBookFile[];
   settings: Settings;
 }
@@ -73,7 +72,7 @@ const book = ({
   uuid,
   authors,
   updated,
-  coverfilename,
+  coverFilename,
   description,
   files,
   settings: { coverPath, bookPath },
@@ -93,12 +92,18 @@ const book = ({
         .join('')}
       <updated>${updated}</updated>
       <content type="text">${description}</content>
+      ${
+        coverFilename
+          ? `
       <link rel="http://opds-spec.org/image"    
-            href="${coverPath}/${coverfilename}"
+            href="${coverPath}/${coverFilename}"
             type="image/jpeg"/>
       <link rel="http://opds-spec.org/image/thumbnail"    
-            href="${coverPath}/${coverfilename}"
-            type="image/jpeg"/>       
+            href="${coverPath}/${coverFilename}"
+            type="image/jpeg"/>
+      `
+          : ''
+      }       
       ${files.map(
         file => `
         <link rel="http://opds-spec.org/acquisition"
