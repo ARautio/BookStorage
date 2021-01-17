@@ -3,6 +3,8 @@ import express from "express";
 import * as ws from "ws";
 
 import { getPath } from "../utils";
+import { BookRepository } from "../repository/bookRepository";
+import Book from "../models/book";
 
 interface DataConnection {
   app: express.Application;
@@ -11,7 +13,10 @@ interface DataConnection {
 
 const PATH = "/opds";
 
-export const opds = ({ app }: DataConnection) => {
+export const opds = (
+  { app }: DataConnection,
+  bookRepository: BookRepository
+) => {
   const getOPDSPath = getPath(PATH);
   /** Root */
   app.get(getOPDSPath("/"), (req, res) => {
@@ -22,6 +27,7 @@ export const opds = ({ app }: DataConnection) => {
         updated: new Date(),
         options: [
           {
+            id: "latest",
             title: "Latest additions",
             type: "XXX",
             updated: new Date(),
@@ -29,59 +35,50 @@ export const opds = ({ app }: DataConnection) => {
             link: getOPDSPath("/latest.xml"),
           },
         ],
+        settings: {
+          name: "BookStorage",
+          bookPath: "/",
+          coverPath: "/",
+        },
       })
     );
   });
 
   /** Latest additions */
-  app.get(getOPDSPath("/latest.xml"), (req, res) => {
+  app.get(getOPDSPath("/latest.xml"), async (req, res) => {
+    const latestBooks: any = await bookRepository.getBooks({ limit: 20 });
     res.set("Content-Type", "text/xml");
     res.send(
       opdsGen.book.root({
+        id: "latest",
         baseUrl: "/opds",
-        type: "SOMETHING",
-        kind: "SOMETHING",
+        url: "latest",
         title: "Latest additions",
         updated: new Date(),
-        books: [
-          {
-            title: "Book",
-            uuid: "",
-            authors: [],
-            updated: new Date(),
-            isbn: "",
-            language: "",
-            issued: new Date(),
-            coverfilename: "",
-            coverFilename: "",
-            description: new Date(),
-            files: [
-              {
-                filename: "/assets/books/book.epub",
-                filetype: "application/epub+zip",
-              },
-            ],
-            publisher: "",
-            settings: {
-              coverPath: "",
-              filePath: "",
+        books: latestBooks.map((book: Book) => ({
+          title: book.title,
+          uuid: "",
+          authors: [
+            {
+              name: book.creator,
             },
+          ],
+          updated: new Date(),
+          coverfilename: "",
+          coverFilename: "",
+          description: new Date(),
+          files: [
+            {
+              filename: book.filename,
+              filetype: "application/epub+zip",
+            },
+          ],
+          settings: {
+            name: "BookStorage",
+            coverPath: "assets/covers/",
+            bookPath: "/assets/books",
           },
-        ],
-      })
-    );
-  });
-  app.get(getOPDSPath("/*"), (req, res) => {
-    console.log(req);
-    res.set("Content-Type", "text/xml");
-    res.send(
-      opdsGen.book.root({
-        baseUrl: "/opds",
-        type: "SOMETHING",
-        kind: "SOMETHING",
-        title: "Popular",
-        updated: new Date(),
-        books: [],
+        })),
       })
     );
   });

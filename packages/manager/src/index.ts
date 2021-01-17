@@ -25,9 +25,11 @@ const bookRepository = new BookRepository(db);
 bookRepository.initiate();
 
 books({ app, wss }, bookRepository, ePubRepository, settingsRepository);
-opds({ app, wss });
+opds({ app, wss }, bookRepository);
 
 app.get("/", (req, res) => res.send("BookStorage started"));
+
+app.use("/assets/books/", express.static("../../books"));
 
 wss.on("connection", (socket) => {
   socket.on("message", (message) => console.log(message));
