@@ -57,7 +57,7 @@
           </Link>
           <Link
             class="text-gray-800 dark:text-white block px-3 py-2 rounded-md text-base font-medium"
-            href="/settings"
+            to="/settings"
           >
             Settings
           </Link>
