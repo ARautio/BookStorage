@@ -33,7 +33,14 @@ export const books = (
     const settings = await settingsRepository.getSettings();
 
     const callback = ({ filename, index, total }: Callback) => {
-      //@TODO: Send websocket
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send({
+            action: "BOOK_IMPORT",
+            data: { filename, index, total },
+          });
+        }
+      });
     };
     const books = await ePubRepository.getBooks(settings.bookPath, callback);
 

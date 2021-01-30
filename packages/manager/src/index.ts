@@ -9,6 +9,7 @@ import { BookRepository } from "./repository/bookRepository";
 import { EPubRepository } from "./repository/epubRepository";
 import { SettingsRepository } from "./repository/settingsRepository";
 import Book from "./models/book";
+import BookFile from "./models/bookfile";
 
 const app = express();
 const PORT = 8000;
@@ -20,7 +21,7 @@ const db = new sqlite.Database(":memory:");
 const settingsRepository = new SettingsRepository(db);
 settingsRepository.initiate();
 
-const ePubRepository = new EPubRepository(Book);
+const ePubRepository = new EPubRepository(Book, BookFile);
 const bookRepository = new BookRepository(db);
 bookRepository.initiate();
 

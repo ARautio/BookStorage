@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import EPub from "epub2";
 
 interface Callback {
   index: number;
@@ -9,9 +8,11 @@ interface Callback {
 
 export class EPubRepository {
   Book;
+  BookFile;
 
-  constructor(Book: any) {
+  constructor(Book: any, BookFile: any) {
     this.Book = Book;
+    this.BookFile = BookFile;
   }
 
   async getBooks(
@@ -34,25 +35,11 @@ export class EPubRepository {
     file: string,
     callback: (file: string) => void
   ) {
-    //@TODO: Read other file types than epub
-    var epub = await EPub.createAsync(filename);
+    var epub = new this.BookFile(filename);
+    await epub.getBook();
     callback(file);
-    let imageFilename = undefined;
-    if (epub.metadata.cover !== undefined) {
-      imageFilename = await new Promise((resolve, reject) => {
-        epub.getImage(
-          epub.metadata.cover,
-          async (error: any, img: any, mimetype: any) => {
-            // @TODO: Check mimetype and give extension based on that
-            const imageFilename =
-              epub.metadata.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() +
-              ".jpg";
-            await fs.writeFile(`../../covers/${imageFilename}`, img);
-            resolve(imageFilename);
-          }
-        );
-      });
-    }
+    const imageFilename = await epub.saveCover();
+
     return new this.Book({
       filename: file,
       ...epub.metadata,
