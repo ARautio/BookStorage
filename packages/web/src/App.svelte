@@ -8,6 +8,7 @@
 
   import Layout from "containers/Layout/Layout.svelte";
   import BookList from "containers/BookList/BookList.svelte";
+  import Settings from "containers/Settings/Settings.svelte";
 
   const queryClient = new QueryClient();
   onMount(() => {
@@ -25,7 +26,7 @@
   <Router {url}>
     <Layout>
       <Route path="/" component={BookList} />
-      <Route path="books" component={BookList} />
+      <Route path="settings" component={Settings} />
     </Layout>
   </Router>
 </QueryClientProvider>
