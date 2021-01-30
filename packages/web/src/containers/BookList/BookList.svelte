@@ -5,14 +5,16 @@
   const queryResult: any = useQuery(["books"], getBooks);
 </script>
 
-{#if $queryResult.isLoading}
-  <span>Loading...</span>
-{:else if $queryResult.isError}
-  <span>Error: {$queryResult.error.message}</span>
-{:else}
-  <ul>
-    {#each $queryResult.data as item}
-      <BookListItem book={item} />
-    {/each}
-  </ul>
-{/if}
+<div class="max-w-7xl mx-auto px-8">
+  {#if $queryResult.isLoading}
+    <span>Loading...</span>
+  {:else if $queryResult.isError}
+    <span>Error: {$queryResult.error.message}</span>
+  {:else}
+    <div class="flex flex-wrap -m-4">
+      {#each $queryResult.data as item}
+        <BookListItem book={item} />
+      {/each}
+    </div>
+  {/if}
+</div>
