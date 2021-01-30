@@ -6,6 +6,8 @@ import * as ws from "ws";
 
 import { books } from "./endpoints/books";
 import { opds } from "./endpoints/opds";
+import { settings } from "./endpoints/settings";
+
 import { BookRepository } from "./repository/bookRepository";
 import { EPubRepository } from "./repository/epubRepository";
 import { SettingsRepository } from "./repository/settingsRepository";
@@ -30,6 +32,7 @@ bookRepository.initiate();
 
 books({ app, wss }, bookRepository, ePubRepository, settingsRepository);
 opds({ app, wss }, bookRepository);
+settings({ app, wss }, settingsRepository);
 
 app.get("/", (req, res) => res.send("BookStorage started"));
 

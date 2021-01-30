@@ -24,7 +24,8 @@ export class SettingsRepository {
   async getSettings(): Promise<Settings> {
     const settings: any =
       (await getSingleFromDB(this.db, "SELECT * FROM settings")) || {};
-    return new Settings({ bookPath: "../../books", ...settings });
+    const wizard = settings.id === undefined;
+    return new Settings({ bookPath: "../../books", wizard, ...settings });
   }
 
   async saveSettings(settings: Settings) {}
