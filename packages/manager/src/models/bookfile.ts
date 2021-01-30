@@ -9,9 +9,13 @@ class BookFile {
     this.filename = filename;
   }
 
-  async getBook() {
+  async loadBook() {
     // @TODO: Handle book by booktype
     this.epub = await EPub.createAsync(this.filename);
+  }
+
+  getBook() {
+    return this.epub.metadata;
   }
 
   async saveCover() {

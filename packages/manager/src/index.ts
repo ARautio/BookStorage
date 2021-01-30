@@ -1,5 +1,6 @@
 import express from "express";
 import sqlite from "sqlite3";
+import cors from "cors";
 import * as http from "http";
 import * as ws from "ws";
 
@@ -12,9 +13,11 @@ import Book from "./models/book";
 import BookFile from "./models/bookfile";
 
 const app = express();
+app.use(cors());
+
 const PORT = 8000;
 const server = http.createServer(app);
-const wss = new ws.Server({ server });
+const wss = new ws.Server({ noServer: true });
 
 const db = new sqlite.Database(":memory:");
 
@@ -34,14 +37,19 @@ app.use("/assets/books/", express.static("../../books"));
 app.use("/assets/covers/", express.static("../../covers"));
 
 wss.on("connection", (socket) => {
-  socket.on("message", (message) => console.log(message));
+  socket.send(JSON.stringify({ action: "CONNECTION" }));
+});
+
+wss.on("close", (ws: any) => {
+  ws.send("connection close");
+});
+
+server.on("upgrade", function (request, socket, head) {
+  wss.handleUpgrade(request, socket, head, function (ws) {
+    wss.emit("connection", ws, request);
+  });
 });
 
 server.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
-});
-server.on("upgrade", (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, (socket) => {
-    wss.emit("connection", socket, request);
-  });
 });

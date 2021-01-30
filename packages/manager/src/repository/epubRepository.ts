@@ -36,13 +36,13 @@ export class EPubRepository {
     callback: (file: string) => void
   ) {
     var epub = new this.BookFile(filename);
-    await epub.getBook();
+    await epub.loadBook();
     callback(file);
     const imageFilename = await epub.saveCover();
 
     return new this.Book({
       filename: file,
-      ...epub.metadata,
+      ...epub.getBook(),
       coverFilename: imageFilename,
     });
   }

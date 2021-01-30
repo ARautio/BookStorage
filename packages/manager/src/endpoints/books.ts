@@ -1,5 +1,4 @@
 import express from "express";
-import { book } from "opds-generator";
 import * as ws from "ws";
 import { getPath } from "../utils";
 
@@ -34,11 +33,10 @@ export const books = (
 
     const callback = ({ filename, index, total }: Callback) => {
       wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send({
-            action: "BOOK_IMPORT",
-            data: { filename, index, total },
-          });
+        if (client.readyState === 1) {
+          client.send(
+            JSON.stringify({ action: "BOOK_IMPORT", data: { filename } })
+          );
         }
       });
     };
