@@ -1,4 +1,5 @@
 <script lang="typescript">
+  import BookListItem from "./BookListItem.svelte";
   import { useQuery } from "@sveltestack/svelte-query";
   import { getBooks } from "api/books";
   const queryResult: any = useQuery(["books"], getBooks);
@@ -11,22 +12,7 @@
 {:else}
   <ul>
     {#each $queryResult.data as item}
-      <li>
-        <img
-          src="http://localhost:8000/assets/covers/{item.coverFilename}"
-          alt="Cover"
-        />
-
-        <a href="http://localhost:8000/assets/books/{item.filename}"
-          >{item.creator} - {item.title}</a
-        >
-      </li>
+      <BookListItem book={item} />
     {/each}
   </ul>
 {/if}
-
-<style>
-  img {
-    width: 100px;
-  }
-</style>
