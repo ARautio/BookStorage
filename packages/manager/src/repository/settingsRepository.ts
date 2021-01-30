@@ -22,6 +22,7 @@ export class SettingsRepository {
   }
 
   async getSettings(): Promise<Settings> {
+    // @ TODO Combine database and docker settings
     const settings: any =
       (await getSingleFromDB(this.db, "SELECT * FROM settings")) || {};
     const wizard = settings.id === undefined;

@@ -26,7 +26,7 @@ class BookFile {
           this.epub.metadata.cover,
           async (error: any, img: any, mimetype: any) => {
             const imageFilename =
-              this.epub.metadata.cover
+              this.epub.metadata.title
                 .replace(/[^a-z0-9]/gi, "_")
                 .toLowerCase() + ".jpg";
             await fs.writeFile(`../../covers/${imageFilename}`, img);
