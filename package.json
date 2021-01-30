@@ -1,0 +1,24 @@
+{
+  "name": "bookstorage",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ARautio/BookStorage.git"
+  },
+  "author": "Aki Rautio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ARautio/BookStorage/issues"
+  },
+  "homepage": "https://github.com/ARautio/BookStorage#readme",
+  "devDependencies": {
+    "grunt": "^1.3.0",
+    "grunt-concurrent": "^3.0.0",
+    "grunt-exec": "^3.0.0"
+  }
+}

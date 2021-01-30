@@ -17,6 +17,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>BookStorage</title>
+</svelte:head>
+
 <QueryClientProvider client={queryClient}>
   <Router {url}>
     <Layout>
