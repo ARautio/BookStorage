@@ -2,6 +2,11 @@ FROM node:10-alpine
 
 WORKDIR /usr/src/app
 
+ARG BOOK_PATH
+ARG COVER_PATH
+ARG CONFIG_PATH
+
+
 # Web platform
 RUN cd packages/web/ && npm install
 RUN cd packages/web/ && npm run build
