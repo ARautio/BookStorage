@@ -1,23 +1,18 @@
-FROM node:10-alpine
+FROM node:14-alpine
 
 WORKDIR /usr/src/app
 
-ARG BOOK_PATH
-ARG COVER_PATH
-ARG CONFIG_PATH
+VOLUME /books
+VOLUME /covers
+VOLUME /config
 
 
 # Web platform
-RUN cd packages/web/ && npm install
-RUN cd packages/web/ && npm run build
-COPY packages/web/dist packages/web
+COPY ./packages/web ./
 
-# Manager platform
-RUN cd packages/manager && npm install
-COPY packages/manager packages/manager
-
-# Main setup
-COPY package*.json .
 RUN npm install
+RUN npm run build
+
+
 EXPOSE 5000 8000
 CMD ["npm", "dev"]

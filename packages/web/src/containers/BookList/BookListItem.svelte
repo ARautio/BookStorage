@@ -3,13 +3,13 @@
 </script>
 
 <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
-  <span class="block relative h-80 rounded overflow-hidden">
+  <div class="block relative h-80 rounded overflow-hidden">
     <img
-      alt="ecommerce"
+      alt={book.coverFilename}
       class="object-cover object-center w-full h-full block"
       src="http://localhost:8000/assets/covers/{book.coverFilename}"
     />
-  </span>
+  </div>
   <div class="mt-4">
     <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
       {book.creator}
@@ -24,6 +24,6 @@
 
 <style>
   img {
-    width: 100px;
+    width: 100%;
   }
 </style>
