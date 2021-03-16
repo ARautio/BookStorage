@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-const messageStore = writable("");
+const messageStore = writable(undefined);
 
 const socket = new WebSocket("ws://localhost:8000");
 

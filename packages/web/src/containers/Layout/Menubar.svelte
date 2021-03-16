@@ -19,6 +19,7 @@
             <div class="ml-10 flex items-baseline space-x-4">
               <MenubarLink to="/">Home</MenubarLink>
               <MenubarLink to="settings">Settings</MenubarLink>
+              <MenubarLink to="log">Log</MenubarLink>
             </div>
           </div>
         </div>
@@ -60,6 +61,12 @@
             to="/settings"
           >
             Settings
+          </Link>
+          <Link
+            class="text-gray-800 dark:text-white block px-3 py-2 rounded-md text-base font-medium"
+            to="/log"
+          >
+            Log
           </Link>
         </div>
       </div>
