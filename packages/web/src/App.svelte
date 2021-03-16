@@ -5,6 +5,7 @@
   import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
   import { onMount } from "svelte";
   import socket from "./api/socket";
+  import { createLogStore } from "./stores/logStore";
 
   export let url = ""; //This property is necessary declare to avoid ignore the Router
 
@@ -14,18 +15,13 @@
   import Log from "containers/Log/Log.svelte";
 
   const queryClient = new QueryClient();
-  const logSocket = writable([]);
+  const logSocket = createLogStore();
   setContext("logSocket", logSocket);
 
   onMount(() => {
     socket.subscribe((data) => {
-      //@TODO: Move this part to separate component
       if (typeof data === "object" && data !== null) {
-        const objectType: Object = data;
-        logSocket.update((old) => [
-          { ...objectType, timestamp: new Date() },
-          ...old,
-        ]);
+        logSocket.add(data as Object);
       }
     });
   });
