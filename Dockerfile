@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14
 
 WORKDIR /usr/src/app
 
@@ -8,11 +8,12 @@ VOLUME /config
 
 
 # Web platform
-COPY ./packages/web ./
-
+COPY ./packages/web ./packages/web
+COPY ./packages/manager ./packages/manager
+COPY ./Gruntfile.js ./Gruntfile.js
+COPY ./package.json ./package.json
 RUN npm install
-RUN npm run build
-
+RUN cd packages/manager && npm install
 
 EXPOSE 5000 8000
-CMD ["npm", "dev"]
+CMD ["npm","run","start"]
