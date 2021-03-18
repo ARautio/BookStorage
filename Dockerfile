@@ -6,6 +6,10 @@ VOLUME /books
 VOLUME /covers
 VOLUME /config
 
+ENV BOOK_PATH /books
+ENV COVER_PATH /covers
+ENV CONFIG_PATH /config
+
 
 # Web platform
 COPY ./packages/web ./packages/web

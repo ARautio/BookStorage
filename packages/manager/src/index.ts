@@ -14,6 +14,10 @@ import { SettingsRepository } from "./repository/settingsRepository";
 import Book from "./models/book";
 import BookFile from "./models/bookfile";
 
+const COVER_PATH = process.env.COVER_PATH || "../../covers/";
+const BOOK_PATH = process.env.BOOK_PATH || "../../books";
+const CONFIG_PATH = process.env.CONFIG_PATH || "../../config";
+
 const app = express();
 app.use(cors());
 
@@ -21,7 +25,7 @@ const PORT = 8000;
 const server = http.createServer(app);
 const wss = new ws.Server({ noServer: true });
 
-const db = new sqlite.Database(":memory:");
+const db = new sqlite.Database(`${CONFIG_PATH}/bookstorage.db`);
 
 const settingsRepository = new SettingsRepository(db);
 settingsRepository.initiate();
@@ -36,8 +40,8 @@ settings({ app, wss }, settingsRepository);
 
 app.get("/", (req, res) => res.send("BookStorage started"));
 
-app.use("/assets/books/", express.static("../../books"));
-app.use("/assets/covers/", express.static("../../covers"));
+app.use("/assets/books/", express.static(BOOK_PATH));
+app.use("/assets/covers/", express.static(COVER_PATH));
 
 wss.on("connection", (socket) => {
   socket.send(JSON.stringify({ action: "CONNECTION" }));

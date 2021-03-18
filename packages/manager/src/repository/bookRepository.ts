@@ -68,10 +68,11 @@ export class BookRepository {
 
     // @TODO: Update the book even though it's in DB
     if (book.length === 0) {
-      await getFromDB(
+      await runFromDB(
         this.db,
         `INSERT INTO books (filename, title, creator, description, ISBN, issued, coverFilename) 
-          VALUES("${filename}", "${title}", "${creator}", "${description}","${ISBN}", "${issued}", "${coverFilename}")`
+          VALUES(?,?,?,?,?,?,?)`,
+        [filename, title, creator, description, ISBN, issued, coverFilename]
       );
     }
     return null;

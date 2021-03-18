@@ -2,6 +2,8 @@ import sqlite3 from "sqlite3";
 import { default as Settings } from "../models/settings";
 import { getSingleFromDB, runFromDB } from "../utils";
 
+const bookPath = process.env.BOOK_PATH || "../../books";
+
 export class SettingsRepository {
   db;
   constructor(db: sqlite3.Database) {
@@ -26,7 +28,7 @@ export class SettingsRepository {
     const settings: any =
       (await getSingleFromDB(this.db, "SELECT * FROM settings")) || {};
     const wizard = settings.id === undefined;
-    return new Settings({ bookPath: "../../books", wizard, ...settings });
+    return new Settings({ bookPath, wizard, ...settings });
   }
 
   async saveSettings(settings: Settings) {}

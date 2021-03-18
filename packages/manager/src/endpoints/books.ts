@@ -41,7 +41,6 @@ export const books = (
       });
     };
     const books = await ePubRepository.getBooks(settings.bookPath, callback);
-
     await Promise.all(
       books.map(async (book: any) => {
         await bookRepository.addBook(book);

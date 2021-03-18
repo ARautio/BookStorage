@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import path from "path";
 
 interface Callback {
   index: number;
@@ -22,12 +23,15 @@ export class EPubRepository {
   ) {
     //@TODO: Ability to read all directory levels
     const files = await fs.readdir(bookPath);
-    const books = files.map(async (file, index) =>
-      this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
-        callbackForEachBook({ index, filename, total: files.length })
-      )
-    );
-    return Promise.all(books);
+    const books = files.map(async (file, index) => {
+      if (path.extname(file) === ".epub") {
+        return this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
+          callbackForEachBook({ index, filename, total: files.length })
+        );
+      }
+    });
+    const resolvedBooks = await Promise.all(books);
+    return await resolvedBooks.filter((item) => item !== undefined);
   }
 
   async getBookMeta(

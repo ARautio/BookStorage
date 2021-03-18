@@ -1,6 +1,8 @@
 import EPub from "epub2";
 import { promises as fs } from "fs";
 
+const COVER_PATH = process.env.COVER_PATH || "../../covers/";
+
 class BookFile {
   filename: string;
   epub: any;
@@ -29,7 +31,7 @@ class BookFile {
               this.epub.metadata.title
                 .replace(/[^a-z0-9]/gi, "_")
                 .toLowerCase() + ".jpg";
-            await fs.writeFile(`../../covers/${imageFilename}`, img);
+            await fs.writeFile(`${COVER_PATH}/${imageFilename}`, img);
             resolve(imageFilename);
           }
         );
