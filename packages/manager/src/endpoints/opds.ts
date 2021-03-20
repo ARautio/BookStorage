@@ -48,7 +48,6 @@ export const opds = (
   app.get(getOPDSPath("/latest.xml"), async (req, res) => {
     const latestBooks: any = await bookRepository.getBooks({ limit: 20 });
     res.set("Content-Type", "text/xml");
-    console.log(latestBooks);
     res.send(
       opdsGen.book.root({
         id: "latest",

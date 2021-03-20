@@ -42,7 +42,7 @@ export class BookRepository {
 
     const books: Book[] = await getFromDB(
       this.db,
-      `SELECT * FROM books ${query}`
+      `SELECT * FROM books ORDER BY title ${query}`
     );
     return books;
   }
