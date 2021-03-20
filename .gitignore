@@ -1,3 +1,4 @@
 *.epub
 node_modules/
 covers/
+config/
