@@ -40,13 +40,32 @@ export const books = (
         }
       });
     };
-    const books = await ePubRepository.getBooks(settings.bookPath, callback);
-    await Promise.all(
-      books.map(async (book: any) => {
-        await bookRepository.addBook(book);
-      })
-    );
-
-    res.sendStatus(200);
+    try {
+      const books = await ePubRepository.getBooks(settings.bookPath, callback);
+      Promise.all(
+        books.map(async (book: any) => {
+          try {
+            await bookRepository.addBook(await book);
+          } catch (e) {
+            // TODO: Handle filename from the error
+            wss.clients.forEach(function each(client) {
+              if (client.readyState === 1) {
+                client.send(
+                  JSON.stringify({
+                    action: "BOOK_IMPORT_ERROR",
+                    data: {},
+                  })
+                );
+              }
+            });
+          }
+          //
+        })
+      );
+      res.sendStatus(200);
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(500);
+    }
   });
 };

@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import path from "path";
+import path, { resolve } from "path";
 
 interface Callback {
   index: number;
@@ -23,15 +23,18 @@ export class EPubRepository {
   ) {
     //@TODO: Ability to read all directory levels
     const files = await fs.readdir(bookPath);
-    const books = files.map(async (file, index) => {
+    let resolvedBooks: any[] = [];
+
+    files.forEach((file, index) => {
       if (path.extname(file) === ".epub") {
-        return this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
-          callbackForEachBook({ index, filename, total: files.length })
+        resolvedBooks.push(
+          this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
+            callbackForEachBook({ index, filename, total: files.length })
+          )
         );
       }
     });
-    const resolvedBooks = await Promise.all(books);
-    return await resolvedBooks.filter((item) => item !== undefined);
+    return resolvedBooks;
   }
 
   async getBookMeta(
@@ -39,15 +42,21 @@ export class EPubRepository {
     file: string,
     callback: (file: string) => void
   ) {
-    var epub = new this.BookFile(filename);
-    await epub.loadBook();
-    callback(file);
-    const imageFilename = await epub.saveCover();
+    try {
+      var epub = new this.BookFile(filename);
+      const book = await epub.loadBook();
 
-    return new this.Book({
-      filename: file,
-      ...epub.getBook(),
-      coverFilename: imageFilename,
-    });
+      callback(file);
+      const imageFilename = await epub.saveCover();
+
+      return new this.Book({
+        filename: file,
+        ...book,
+        coverFilename: imageFilename,
+      });
+    } catch (e) {
+      // @TODO: Better erro handling
+      throw Error("Error");
+    }
   }
 }

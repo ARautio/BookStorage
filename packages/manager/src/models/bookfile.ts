@@ -14,6 +14,7 @@ class BookFile {
   async loadBook() {
     // @TODO: Handle book by booktype
     this.epub = await EPub.createAsync(this.filename);
+    return this.epub.metadata;
   }
 
   getBook() {
@@ -27,12 +28,14 @@ class BookFile {
         this.epub.getImage(
           this.epub.metadata.cover,
           async (error: any, img: any, mimetype: any) => {
-            const imageFilename =
-              this.epub.metadata.title
-                .replace(/[^a-z0-9]/gi, "_")
-                .toLowerCase() + ".jpg";
-            await fs.writeFile(`${COVER_PATH}/${imageFilename}`, img);
-            resolve(imageFilename);
+            if (img !== undefined) {
+              const imageFilename =
+                this.epub.metadata.title
+                  .replace(/[^a-z0-9]/gi, "_")
+                  .toLowerCase() + ".jpg";
+              await fs.writeFile(`${COVER_PATH}/${imageFilename}`, img);
+              resolve(imageFilename);
+            }
           }
         );
       });
