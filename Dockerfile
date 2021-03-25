@@ -11,6 +11,7 @@ ENV COVER_PATH /covers
 ENV CONFIG_PATH /config
 
 ARG MANAGER_URL
+ARG MANAGER_SOCKET_URL
 
 
 # Web platform
