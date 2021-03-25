@@ -10,6 +10,8 @@ ENV BOOK_PATH /books
 ENV COVER_PATH /covers
 ENV CONFIG_PATH /config
 
+ARG MANAGER_URL
+
 
 # Web platform
 COPY ./packages/web ./packages/web
