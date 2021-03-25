@@ -1,7 +1,12 @@
 const fs = require("fs");
 
-const MANAGER_URL = `"${process.env.MANAGER_URL}"`;
+const variables = {
+  MANAGER_URL: `"${process.env.MANAGER_URL}"`,
+  MANAGER_SOCKET_URL: `${process.env.MANAGER_SOCKET_URL}`,
+};
 
-const file = fs.readFileSync("./public/build/bundle.js").toString();
-const updatedFile = file.replace("process.env.MANAGER_URL", MANAGER_URL);
-fs.writeFileSync("./public/build/bundle.js", updatedFile);
+let file = fs.readFileSync("./public/build/bundle.js").toString();
+Object.keys(variables).forEach((key) => {
+  file = file.replace(`process.env.${key}`, variables[key]);
+});
+fs.writeFileSync("./public/build/bundle.js", file);

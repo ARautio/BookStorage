@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 const messageStore = writable(undefined);
 
-const socket = new WebSocket("ws://localhost:8000");
+const socket = new WebSocket(process.env.MANAGER_SOCKET_URL);
 
 // Connection opened
 socket.addEventListener("open", function (event) {
