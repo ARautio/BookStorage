@@ -1,6 +1,6 @@
 import { get_slot_changes } from "svelte/internal";
 
-const PATH = "http://localhost:8000";
+const PATH = process.env.MANAGER_URL;
 
 /**
  * Generic GET method

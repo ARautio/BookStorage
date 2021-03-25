@@ -4,6 +4,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "prestart": "node ./scripts/replaceEnv.js",
     "start": "sirv public -s --host",
     "validate": "svelte-check"
   },
