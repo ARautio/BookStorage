@@ -13,6 +13,7 @@ class BookFile {
 
   async loadBook() {
     // @TODO: Handle book by booktype
+    EPub.libPromise = Promise;
     this.epub = await EPub.createAsync(this.filename);
     return this.epub.metadata;
   }
