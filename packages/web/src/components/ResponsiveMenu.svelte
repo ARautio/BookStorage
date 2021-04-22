@@ -2,7 +2,7 @@
   import { Link } from "svelte-routing";
   import MenubarLink from "./MenubarLink.svelte";
 
-  export let items: { to: String, label: String }[] = [];
+  export let items: { to: string; label: string }[] = [];
 
   let dropdownOpen = false;
 
@@ -19,7 +19,6 @@
           <slot name="title" />
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
-              <slot name="menubar" />
               {#each items as item}
                 <MenubarLink to={item.to}>{item.label}</MenubarLink>
               {/each}
@@ -27,7 +26,9 @@
           </div>
         </div>
         <div class="block">
-          <div class="ml-4 flex items-center md:ml-6" />
+          <div class="ml-4 flex items-center md:ml-6">
+            <slot name="menubar" />
+          </div>
         </div>
         <div class="-mr-2 flex md:hidden">
           <button
@@ -54,12 +55,9 @@
       <div class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {#each items as item}
-          <MenubarLink
-            class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            to={item.to}
-          >
-            {item.label}
-          </MenubarLink>
+            <MenubarLink to={item.to}>
+              {item.label}
+            </MenubarLink>
           {/each}
           <slot name="dropdownMenu" />
         </div>
