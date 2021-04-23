@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import path, { resolve } from "path";
+import path from "path";
 
 interface Callback {
   index: number;
@@ -44,7 +44,7 @@ export class EPubRepository {
   ) {
     try {
       var epub = new this.BookFile(filename);
-      const book = await epub.loadBook();
+      const book = await epub.load();
 
       callback(file);
       const imageFilename = await epub.saveCover();

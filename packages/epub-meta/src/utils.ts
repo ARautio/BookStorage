@@ -1,11 +1,21 @@
-import { MetadataProps } from './index';
+import { MetadataProps } from '../types/index';
 
-const parseAuthor = (authors: any) => {
+/**
+ * Parse author from authors field
+ * @param authors author list
+ * @returns Authors
+ */
+const parseAuthor = (authors: any): string[] => {
   const authorString = authors[0]._;
   return authorString.split(',').map((author: string) => author.trim());
 };
 
-const parseDate = (dates: any[]) => {
+/**
+ * Parse date
+ * @param dates
+ * @returns creation date
+ */
+const parseDate = (dates: any[]): Date | undefined => {
   const date = dates[0] ? dates[0] : undefined;
   if (typeof date === 'object') {
     return new Date(date._);
@@ -13,14 +23,25 @@ const parseDate = (dates: any[]) => {
   return date !== undefined ? new Date(date) : undefined;
 };
 
-const parseISBN = (identifiers: any) => {
+/**
+ * Parse ISBN number
+ * @param identifiers All identifiers
+ * @returns isbn number string
+ */
+const parseISBN = (identifiers: any): string | undefined => {
   const isbnIdent = identifiers.find(
     (ident: any) => ident['$']['opf:scheme'] === 'ISBN'
   );
   return isbnIdent?._;
 };
 
-const parseCoverPath = (meta: any, manifest: any) => {
+/**
+ * Cover path
+ * @param meta metadata
+ * @param manifest manifest
+ * @returns cover path
+ */
+const parseCoverPath = (meta: any, manifest: any): string | undefined => {
   const coverMetaName = meta.find(
     (metaItem: any) => metaItem['$']['name'] === 'cover'
   );
@@ -33,6 +54,11 @@ const parseCoverPath = (meta: any, manifest: any) => {
   return undefined;
 };
 
+/**
+ * Parses metadata
+ * @param metadata metadata from the
+ * @returns Structured metadata
+ */
 export const parseMeta = (metadata: any): MetadataProps => {
   const data = metadata?.package?.metadata[0];
   const manifest = metadata?.package?.manifest[0].item;
@@ -43,8 +69,4 @@ export const parseMeta = (metadata: any): MetadataProps => {
     isbn: parseISBN(data['dc:identifier']),
     coverPath: parseCoverPath(data.meta, manifest),
   };
-};
-
-export const parseCover = (epub: any) => {
-  return epub;
 };

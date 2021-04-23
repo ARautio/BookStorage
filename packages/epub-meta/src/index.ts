@@ -1,15 +1,9 @@
 import zipFile from 'node-stream-zip';
 import { parseStringPromise } from 'xml2js';
+import mime from 'mime-types';
 
 import * as utils from './utils';
-
-export interface MetadataProps {
-  title?: string;
-  author: string[];
-  date?: Date;
-  isbn?: string;
-  coverPath?: string;
-}
+import { MetadataProps } from '../types/index';
 
 class EPub {
   filepath: string;
@@ -38,7 +32,7 @@ class EPub {
     }
     const zip = new zipFile.async({ file: this.filepath });
     const file = await zip.entryData(`OEBPS/${this.metadata.coverPath}`);
-    return file;
+    return { file, mimetype: mime.lookup(this.metadata.coverPath) };
   }
 }
 
