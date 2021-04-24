@@ -5,22 +5,22 @@ module.exports = function (grunt) {
   grunt.initConfig({
     exec: {
       installnode: {
-        cmd: "cd packages/manager && npm install",
+        cmd: "cd packages/manager && yarn install",
       },
       installweb: {
-        cmd: "cd packages/web && npm install",
+        cmd: "cd packages/web && yarn install",
       },
       buildweb: {
-        cmd: "cd packages/web && npm run build",
+        cmd: "cd packages/web && yarn run build",
       },
       runnode: {
-        cmd: "cd packages/manager && npm run start",
+        cmd: "cd packages/manager && yarn run start",
       },
       devweb: {
-        cmd: "cd packages/web && npm run dev",
+        cmd: "cd packages/web && yarn run dev",
       },
       runweb: {
-        cmd: "cd packages/web && npm run start",
+        cmd: "cd packages/web && yarn run start",
       },
     },
     concurrent: {

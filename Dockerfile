@@ -1,4 +1,6 @@
-FROM node:14
+FROM node:14-alpine
+
+RUN apk add --no-cache python make g++
 
 WORKDIR /usr/src/app
 
@@ -19,8 +21,9 @@ COPY ./packages/web ./packages/web
 COPY ./packages/manager ./packages/manager
 COPY ./Gruntfile.js ./Gruntfile.js
 COPY ./package.json ./package.json
-RUN npm install
-RUN npm run build
+COPY ./yarn.lock ./yarn.lock
+RUN yarn install
+RUN yarn run build
 
 EXPOSE 5000 8000
-CMD ["npm","run","start"]
+CMD ["yarn","run","start"]

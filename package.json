@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/manager",
+    "packages/web"
+  ],
   "scripts": {
     "start": "grunt",
     "dev": "grunt dev",
