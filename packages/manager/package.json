@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "epub-meta": "^0.1.0",
+    "epub-meta": "^0.1.1",
     "express": "^4.17.1",
     "opds-generator": "^0.1.5",
     "sqlite3": "^5.0.1",

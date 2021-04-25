@@ -51,8 +51,8 @@ wss.on("close", (ws: any) => {
   ws.send("connection close");
 });
 
-server.on("upgrade", function (request, socket, head) {
-  wss.handleUpgrade(request, socket, head, function (ws) {
+server.on("upgrade", function(request, socket, head) {
+  wss.handleUpgrade(request, socket, head, function(ws) {
     wss.emit("connection", ws, request);
   });
 });

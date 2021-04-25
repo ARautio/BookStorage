@@ -53,12 +53,12 @@ export class BookRepository {
 
   async addBook({
     filename,
-    title,
-    creator,
-    description,
-    ISBN,
-    issued,
-    coverFilename,
+    title = "Unknown",
+    creator = "Unknown",
+    description = "",
+    ISBN = "",
+    issued = "",
+    coverFilename = "",
   }: Book) {
     // @TODO: Check if filename is already
     const book: any = await getFromDB(

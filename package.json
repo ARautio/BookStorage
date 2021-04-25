@@ -5,8 +5,7 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "packages/manager",
-    "packages/web"
+    "packages/*"
   ],
   "scripts": {
     "start": "grunt",

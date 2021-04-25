@@ -1,14 +1,23 @@
-interface Book {
+interface BookProps {
   filename: string;
-  title: string;
-  creator: string;
-  description: string;
-  ISBN: string;
-  issued: string;
-  coverFilename: string;
+  title?: string;
+  creator?: string;
+  description?: string;
+  ISBN?: string;
+  issued?: string;
+  coverFilename?: string;
 }
 
+export type BookConstructor = new (props: BookProps) => Book;
 class Book {
+  filename: string;
+  title?: string;
+  creator?: string;
+  description?: string;
+  ISBN?: string;
+  issued?: string;
+  coverFilename?: string;
+
   constructor({
     title,
     filename,
@@ -17,7 +26,7 @@ class Book {
     ISBN,
     issued,
     coverFilename,
-  }: Book) {
+  }: BookProps) {
     this.filename = filename;
     this.title = title;
     this.creator = creator;

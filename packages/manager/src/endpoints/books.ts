@@ -2,6 +2,8 @@ import express from "express";
 import * as ws from "ws";
 import { getPath } from "../utils";
 
+import BookFile from "../models/bookfile";
+
 const PATH = "/books";
 
 interface DataConnection {
@@ -23,10 +25,16 @@ export const books = (
 ) => {
   const getBookPath = getPath(PATH);
 
+  /**
+   * Get All books
+   */
   app.get(getBookPath("/"), async (req, res) => {
     res.send(await bookRepository.getBooks());
   });
 
+  /**
+   * Import books from the paht
+   */
   app.get(getBookPath("/import"), async (req, res) => {
     //@TODO: Error handling
     const settings = await settingsRepository.getSettings();
@@ -41,11 +49,15 @@ export const books = (
       });
     };
     try {
-      const books = await ePubRepository.getBooks(settings.bookPath, callback);
+      const books: BookFile[] = await ePubRepository.getBooks(
+        settings.bookPath,
+        callback
+      );
       Promise.all(
         books.map(async (book: any) => {
           try {
-            await bookRepository.addBook(await book);
+            const bookData = await book;
+            await bookRepository.addBook(bookData);
           } catch (e) {
             // TODO: Handle filename from the error
             wss.clients.forEach(function each(client) {
