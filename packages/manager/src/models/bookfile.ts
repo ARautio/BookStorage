@@ -9,7 +9,9 @@ class BookFile extends EPub {
   async saveCover() {
     // @TODO: Error handling reporting
     if (this.cover !== undefined && this.metadata?.title !== undefined) {
-      const coverFile = await this.getCover();
+      const coverFile = await this.getCover().catch(() => ({
+        file: undefined,
+      }));
       if (coverFile.file !== undefined) {
         const imageFilename =
           this.metadata.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() +

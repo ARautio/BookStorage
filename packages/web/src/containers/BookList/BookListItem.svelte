@@ -1,5 +1,9 @@
 <script language="typescript">
   export let book;
+  let coverFile =
+    book.coverFilename !== ""
+      ? `http://localhost:8000/assets/covers/${book.coverFilename}`
+      : " /assets/BookCover.png";
 </script>
 
 <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
@@ -7,7 +11,7 @@
     <img
       alt={book.coverFilename}
       class="object-cover object-center w-full h-full block"
-      src="http://localhost:8000/assets/covers/{book.coverFilename}"
+      src={coverFile}
     />
   </div>
   <div class="mt-4">
