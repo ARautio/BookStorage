@@ -3,11 +3,6 @@ import path from "path";
 
 import Book, { BookConstructor } from "../models/book";
 import { BookFileConstructor } from "../models/bookfile";
-interface Callback {
-  index: number;
-  filename: string;
-  total: number;
-}
 
 export class EPubRepository {
   Book;
@@ -18,38 +13,24 @@ export class EPubRepository {
     this.BookFile = BookFile;
   }
 
-  async getBooks(
-    bookPath: string,
-    callbackForEachBook: ({ index, filename, total }: Callback) => void = () =>
-      null
-  ): Promise<Book[]> {
+  async getBooks(bookPath: string): Promise<Promise<Book>[]> {
     //@TODO: Ability to read all directory levels
     const files = await fs.readdir(bookPath);
     let resolvedBooks: any[] = [];
 
     files.forEach((file, index) => {
       if (path.extname(file) === ".epub") {
-        resolvedBooks.push(
-          this.getBookMeta(`${bookPath}/${file}`, file, (filename) =>
-            callbackForEachBook({ index, filename, total: files.length })
-          )
-        );
+        resolvedBooks.push(this.getBookMeta(`${bookPath}/${file}`, file));
       }
     });
     return resolvedBooks;
   }
 
-  async getBookMeta(
-    filename: string,
-    file: string,
-    callback: (file: string) => void
-  ) {
+  async getBookMeta(filename: string, file: string) {
     try {
       var epub = new this.BookFile(filename);
       await epub.load();
-      console.log(epub.metadata?.coverPath);
       const imageFilename = await epub.saveCover();
-      callback(file);
       return new this.Book({
         filename: file,
         creator: epub.metadata?.author.join(", "),

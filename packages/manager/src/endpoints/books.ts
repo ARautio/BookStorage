@@ -2,7 +2,10 @@ import express from "express";
 import * as ws from "ws";
 import { getPath } from "../utils";
 
-import BookFile from "../models/bookfile";
+import Book from "../models/book";
+import { BookRepository } from "../repository/bookRepository";
+import { EPubRepository } from "../repository/epubRepository";
+import { SettingsRepository } from "../repository/settingsRepository";
 
 const PATH = "/books";
 
@@ -19,9 +22,9 @@ interface Callback {
 
 export const books = (
   { app, wss }: DataConnection,
-  bookRepository: any,
-  ePubRepository: any,
-  settingsRepository: any
+  bookRepository: BookRepository,
+  ePubRepository: EPubRepository,
+  settingsRepository: SettingsRepository
 ) => {
   const getBookPath = getPath(PATH);
 
@@ -36,28 +39,36 @@ export const books = (
    * Import books from the paht
    */
   app.get(getBookPath("/import"), async (req, res) => {
-    //@TODO: Error handling
-    const settings = await settingsRepository.getSettings();
-
     const callback = ({ filename, index, total }: Callback) => {
       wss.clients.forEach(function each(client) {
         if (client.readyState === 1) {
           client.send(
-            JSON.stringify({ action: "BOOK_IMPORT", data: { filename } })
+            JSON.stringify({
+              action: "BOOK_IMPORT",
+              data: { filename, index, total },
+            })
           );
         }
       });
     };
+
+    const settings = await settingsRepository.getSettings();
+
     try {
-      const books: BookFile[] = await ePubRepository.getBooks(
-        settings.bookPath,
-        callback
+      const books: Promise<Book>[] = await ePubRepository.getBooks(
+        settings.bookPath
       );
+      const bookSize = books.length;
       Promise.all(
-        books.map(async (book: any) => {
+        books.map(async (book: Promise<Book>, index: number) => {
           try {
             const bookData = await book;
             await bookRepository.addBook(bookData);
+            callback({
+              filename: bookData.filename,
+              index: index + 1,
+              total: bookSize,
+            });
           } catch (e) {
             // TODO: Handle filename from the error
             wss.clients.forEach(function each(client) {
@@ -65,13 +76,15 @@ export const books = (
                 client.send(
                   JSON.stringify({
                     action: "BOOK_IMPORT_ERROR",
-                    data: {},
+                    data: {
+                      index: index + 1,
+                      total: bookSize,
+                    },
                   })
                 );
               }
             });
           }
-          //
         })
       );
       res.sendStatus(200);
