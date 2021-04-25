@@ -18,21 +18,39 @@ class EPub {
 
   async load() {
     const zip = new zipFile.async({ file: this.filepath });
-    const file = await zip.entryData('OEBPS/content.opf');
-    const data = await parseStringPromise(file.toString());
-    this.metadata = utils.parseMeta(data);
+    const filename = Object.keys(await zip.entries()).find(name =>
+      name.includes('opf')
+    );
+    if (filename !== undefined) {
+      const file = await zip.entryData(filename);
+      const data = await parseStringPromise(file.toString());
+      this.metadata = utils.parseMeta(data);
+    } else {
+      throw Error(`Metadata file couldnt be found for file ${this.filepath}`);
+    }
   }
 
   async getCover() {
     if (this.metadata === undefined) {
-      throw Error('Load file data first');
+      throw Error(`Load file data first for file ${this.filepath}`);
     }
     if (this.metadata.coverPath === undefined) {
-      throw Error('This book doesnt have cover');
+      throw Error(`${this.filepath} doesnt have a cover`);
     }
     const zip = new zipFile.async({ file: this.filepath });
-    const file = await zip.entryData(`OEBPS/${this.metadata.coverPath}`);
-    return { file, mimetype: mime.lookup(this.metadata.coverPath) };
+    try {
+      const filename = Object.keys(await zip.entries()).find(name =>
+        name.includes(this.metadata?.coverPath || '')
+      );
+      if (filename !== undefined) {
+        const file = await zip.entryData(filename);
+        return { file, mimetype: mime.lookup(this.metadata.coverPath) };
+      } else {
+        throw Error(`Book cover file couldnt be found for ${this.filepath}`);
+      }
+    } catch (e) {
+      throw Error(`Book cover file couldnt be found for ${this.filepath}`);
+    }
   }
 }
 

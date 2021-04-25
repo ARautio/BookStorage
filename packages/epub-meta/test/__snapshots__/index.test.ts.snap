@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`epub loadEpub should be able to load 1`] = `
+exports[`epub loadEpub File pg2097-images.epub can be loaded 1`] = `
 Object {
   "author": Array [
     "Arthur Conan Doyle",
@@ -8,8 +8,6 @@ Object {
   "coverPath": "@public@vhost@g@gutenberg@html@files@2097@2097-h@images@cover.jpg",
   "date": 2000-03-01T00:00:00.000Z,
   "isbn": undefined,
-  "title": Array [
-    "The Sign of the Four",
-  ],
+  "title": "The Sign of the Four",
 }
 `;
